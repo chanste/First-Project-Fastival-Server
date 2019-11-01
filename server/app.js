@@ -4,7 +4,7 @@ const cors = require('cors');
 const session = require('express-session'); // 용도?
 
 const concert = require('./models').Concert;
-const festival = requrie('./models').Festival;
+const festival = require('./models').Festival;
 const port = 5000;
 
 let app = express();

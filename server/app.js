@@ -5,6 +5,7 @@ const session = require('express-session'); // 용도?
 
 const concert = require('./models').Concert;
 const festival = requrie('./models').Festival;
+const port = 5000;
 
 let app = express();
 
@@ -41,3 +42,8 @@ app.get('/festivals', (req, res) => {
 //   console.log('연결 실패');
 //   //console.log(err);
 // })
+
+app.set('port', port);
+app.listen(app.get('port'));
+
+module.exports = app;

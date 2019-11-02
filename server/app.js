@@ -19,9 +19,11 @@ app.post('/users', (req, res) => {
   console.log(data);
   users.create({
       // id: data.id,
-      email: data[0].email,
-      username: data[0].username,
-      photoUrl: data[0].photoUrl
+      user_Id: data.user_Id,
+      email: data.email,
+      username: data.username,
+      givenname: data.givenname,
+      photourl: data.photourl
   }).then(result => {
       res.status(200).json(result)
   })
@@ -32,7 +34,7 @@ app.get('/festivals', (req, res) => {
     .findAll()
     .then(result => {
       if (result) {
-        console.log(result);
+        //console.log(result);
         res.status(200).json(result)
       } else {
         res.sendStatus(204);
@@ -48,13 +50,55 @@ app.post('/festivals', (req, res) => {
   const data = req.body;
   userfestival
   .create({
-      user_id: data[0].user_id,
-      fest_id: data[0].festival_id
+      user_Id: data.user_Id,
+      festival_Id: data.festival_Id
   }).then(result => {
       res.status(200).json(result)
   })
 })   
 
+app.get('/festivals/:id', (req, res) => {
+  //const data = req.body
+  userfestival
+    .findOne({
+      where : {user_Id: req.params.id}
+    })
+    .then(result => {
+      festival
+        .findAll({
+          limit: 100,
+          where: {festival_Id: result.festival_Id}
+        })
+        .then(final => {
+          if (final) {
+            res.status(200).json(final);
+          } else {
+            res.sendStatus(204);
+          }
+        })
+        .catch(error => {
+          res.status(500).send(result);
+        })
+      // festival
+      //   .find({
+      //     where : {festival_Id: result.festival_Id}
+      //   })
+      //   .then(final => {
+      //     if (final) {
+      //       res.status(200).json(final);
+      //     } else {
+      //       res.sendStatus(204);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     res.status(500).send(error);
+      //   })
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+
+})
 // app.post('/festivals', (req, res) => {
 //   const data = req.body;
 

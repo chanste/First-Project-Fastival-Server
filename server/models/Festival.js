@@ -2,11 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
  const Festival = sequelize.define('Festival', {
-  festival_Id: {
-     type: DataTypes.INTEGER,
-     primaryKey: true,
-     autoIncrement: true
-   },
+  festival_Id: DataTypes.INTEGER,
    name: DataTypes.STRING,
    img_url: DataTypes.STRING,
    map_url: DataTypes.STRING
@@ -20,3 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   return Festival;
 }
+
+
+// festival_Id: {
+//   type: DataTypes.INTEGER,
+//   primaryKey: true,
+//   autoIncrement: true
+// }

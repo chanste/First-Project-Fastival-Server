@@ -2,12 +2,13 @@
 
 module.exports = (sequelize, DataTypes) => {
  const Concert = sequelize.define('Concert', {
-   id: {
+  concert_Id: {
      type: DataTypes.INTEGER,
      primaryKey: true,
      autoIncrement: true
    },
-   time: DataTypes.DATE,
+   starttime: DataTypes.DATE,
+   endtime: DataTypes.DATE,
    stage: DataTypes.STRING,
    artist: DataTypes.STRING,
    con_day: DataTypes.STRING,

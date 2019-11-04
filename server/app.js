@@ -8,8 +8,10 @@ const festival = require('./models').Festival;
 const users = require('./models').Users;
 const userfestival = require('./models').UserFestival;
 const userconcert = require('./models').UserConcert;
+// const place = require('./festivals').place
 const port = 5000;
 
+console.log(1);
 let app = express();
 
 app.use(bodyParser.json());
@@ -62,12 +64,14 @@ app.get('/festivals/:id', (req, res) => {
   users.
     findOne({
       where: { user_Id: req.params.id },
-      include: {
-        model: festival
-      }
+      include: [{
+        attributes: ['festival_Id','name', 'map_url', 'img_url'],
+        model: festival,
+        through: { attributes: [] }
+      }]
     })
     .then(result => {
-      res.status(200).json(result);
+      res.status(200).json(result.Festivals);
     })
   
     .catch(error => {
@@ -75,9 +79,11 @@ app.get('/festivals/:id', (req, res) => {
     })
 })
 
-app.get('/concerts', (req, res) => {
+app.get('/concerts/:fest_id', (req, res) => {
   concert
-    .findAll()
+    .findAll({
+      where: { festival_Id: req.params.fest_id}
+    })
     .then(result => {
       if (result) {
         res.status(200).json(result)
@@ -90,16 +96,23 @@ app.get('/concerts', (req, res) => {
     })
 });
 
-app.get('/concerts/:id', (req, res) => {
+app.get('/concerts_user/:id/:fest_id', (req, res) => {
   users.
     findOne({
-      where: { user_Id: req.params.id },
+      where: { 
+        user_Id: req.params.id,
+      },
       include: {
-        model: concert
+        attributes: ['concert_Id', 'starttime', 'endtime', 'stage', 'artist', 'con_day', 'festival_Id'],
+        model: concert,
+        where: {
+          festival_Id: req.params.fest_id
+        },
+        through: {attributes: []}
       }
     })
     .then(result => {
-      res.status(200).json(result);
+      res.status(200).json(result.Concerts);
     })
     .catch(error => {
       res.status(500).send(error);
@@ -124,6 +137,24 @@ app.delete('/concerts', (req, res) => {
       where: {
         user_Id: data.user_Id,
         concert_Id: data.concert_Id
+      }
+    })
+    .then(() => {
+      let response = {
+        message: "delete complete",
+        state: true
+      };
+      return res.json(response);
+    })
+})
+
+app.delete('/festivals', (req, res) => {
+  const data = req.body;
+  userfestival
+    .destroy({
+      where: {
+        user_Id: data.user_Id,
+        festival_Id: data.festival_Id
       }
     })
     .then(() => {

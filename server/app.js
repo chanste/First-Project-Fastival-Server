@@ -117,6 +117,24 @@ app.post('/concerts', (req, res) => {
     })
 })
 
+app.delete('/concerts', (req, res) => {
+  const data = req.body;
+  userconcert
+    .destroy({
+      where: {
+        user_Id: data.user_Id,
+        concert_Id: data.concert_Id
+      }
+    })
+    .then(() => {
+      let response = {
+        message: "delete complete",
+        state: true
+      };
+      return res.json(response);
+    })
+})
+
 
 app.set('port', port);
 app.listen(app.get('port'));

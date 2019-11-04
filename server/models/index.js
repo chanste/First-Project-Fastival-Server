@@ -25,6 +25,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 
 sequelize.sync();
 
+// 현재 디렉토리의 .js 파일을 index.js로 import 시키는 것
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -35,6 +36,7 @@ fs
     db[model.name] = model;
   });
 
+  // 모델 간의 관계를 통합하는 것
   Object.keys(db).forEach(modelName => {
     if (db[modelName].associate) {
       db[modelName].associate(db);
@@ -43,6 +45,6 @@ fs
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-console.log(db)
+//console.log(db)
 //console.log(db);
 module.exports = db;

@@ -7,6 +7,7 @@ const concert = require('./models').Concert;
 const festival = require('./models').Festival;
 const users = require('./models').Users;
 const userfestival = require('./models').UserFestival;
+const userconcert = require('./models').UserConcert;
 const port = 5000;
 
 let app = express();
@@ -16,7 +17,7 @@ app.use(cors());
 
 app.post('/users', (req, res) => {
   const data = req.body;
-  console.log(data);
+  //console.log(data);
   users.create({
       // id: data.id,
       user_Id: data.user_Id,
@@ -58,27 +59,90 @@ app.post('/festivals', (req, res) => {
 })   
 
 app.get('/festivals/:id', (req, res) => {
-  //const data = req.body
-  userfestival
-    .findOne({
-      where : {user_Id: req.params.id}
+  users.
+    findOne({
+      where: { user_Id: req.params.id },
+      include: {
+        model: festival
+      }
     })
     .then(result => {
-      festival
-        .findAll({
-          limit: 100,
-          where: {festival_Id: result.festival_Id}
-        })
-        .then(final => {
-          if (final) {
-            res.status(200).json(final);
-          } else {
-            res.sendStatus(204);
-          }
-        })
-        .catch(error => {
-          res.status(500).send(result);
-        })
+      res.status(200).json(result);
+    })
+  
+    .catch(error => {
+      res.status(500).send(error);
+    })
+})
+
+app.get('/concerts', (req, res) => {
+  concert
+    .findAll()
+    .then(result => {
+      if (result) {
+        res.status(200).json(result)
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    })
+});
+
+app.get('/concerts/:id', (req, res) => {
+  users.
+    findOne({
+      where: { user_Id: req.params.id },
+      include: {
+        model: concert
+      }
+    })
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    }) 
+});
+
+app.post('/concerts', (req, res) => {
+  const data = req.body;
+  userconcert
+    .create({
+      user_Id: data.user_Id,
+      concert_Id: data.concert_Id
+    }).then(result => {
+      res.status(200).json(result);
+    })
+})
+
+
+app.set('port', port);
+app.listen(app.get('port'));
+
+module.exports = app;
+
+// userfestival
+  //   .findOne({
+  //     where : {user_Id: req.params.id}
+  //   })
+  //   .then(result => {
+  //     festival
+  //       .findAll({
+  //         limit: 100,
+  //         where: {festival_Id: result.festival_Id}
+  //       })
+  //       .then(final => {
+  //         if (final) {
+  //           res.status(200).json(final);
+  //         } else {
+  //           res.sendStatus(204);
+  //         }
+  //       })
+  //       .catch(error => {
+  //         res.status(500).send(result);
+  //       })
       // festival
       //   .find({
       //     where : {festival_Id: result.festival_Id}
@@ -93,13 +157,8 @@ app.get('/festivals/:id', (req, res) => {
       //   .catch(error => {
       //     res.status(500).send(error);
       //   })
-    })
-    .catch(error => {
-      res.status(500).send(error);
-    })
 
-})
-// app.post('/festivals', (req, res) => {
+      // app.post('/festivals', (req, res) => {
 //   const data = req.body;
 
 //   festival
@@ -127,8 +186,3 @@ app.get('/festivals/:id', (req, res) => {
 //   console.log('연결 실패');
 //   //console.log(err);
 // })
-
-app.set('port', port);
-app.listen(app.get('port'));
-
-module.exports = app;

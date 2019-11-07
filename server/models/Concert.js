@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
      primaryKey: true,
      autoIncrement: true
    },
-   starttime: DataTypes.STRING,
-   endtime: DataTypes.STRING,
    stage: DataTypes.STRING,
    artist: DataTypes.STRING,
+   starttime: DataTypes.STRING,
+   endtime: DataTypes.STRING,
    con_day: DataTypes.INTEGER,
    //festival_Id: DataTypes.INTEGER // 외래 키 처리
 }, {

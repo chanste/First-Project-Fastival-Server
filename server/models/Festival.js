@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     Festival.hasMany(models.Concert, {
       foreignKey: 'festival_Id'
     })
+    Festival.hasMany(models.Message, {
+      foreignKey: 'festival_Id'
+    })
   };
   return Festival;
 }

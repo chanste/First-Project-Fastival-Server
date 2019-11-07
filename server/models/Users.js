@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       through: 'UserConcert',
       foreignKey: 'user_Id'
     })
+    Users.hasMany(models.Message, {
+      foreignKey: 'user_Id'
+    })
     // associations can be defined here
   };
   return Users;

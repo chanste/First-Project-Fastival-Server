@@ -50,7 +50,7 @@ test_1.on('connection', socket => {
     .then(result => {
       console.log(result);
       socket.emit('chat', result);
-    // 클라이언트에서는 쓰면 emit 이 필요한 것
+    });// 클라이언트에서는 쓰면 emit 이 필요한 것
   socket.on('chat', data => {
     msg
       .create({

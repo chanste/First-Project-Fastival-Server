@@ -33,7 +33,14 @@ const io = require('socket.io')(server);
 
 const port = 5000;
 let chkBoolean = false; 
-
+// msg
+//     .findAll()
+//     .then(result => {
+//       console.log(result);
+//       // socket.emit('chat', {
+//       //   message: result
+//       // })
+//     });
 
 var test_1 = io.of('/msg/1');
 
@@ -41,21 +48,17 @@ test_1.on('connection', socket => {
   msg
     .findAll()
     .then(result => {
-      socket.emit('chat', {
-        message: [result]
-      })
-    });
+      console.log(result);
+      socket.emit('chat', result);
     // 클라이언트에서는 쓰면 emit 이 필요한 것
-  test_1.on('chat', data => {
+  socket.on('chat', data => {
     msg
       .create({
         user_Id: data.user._Id,
         //festival_Id: data.festival_Id,
         msg: data.text
       })
-    test_1.emit('chat', {
-      messages: [data]
-    })
+    test_1.emit('chat', data)
   })
 });
 

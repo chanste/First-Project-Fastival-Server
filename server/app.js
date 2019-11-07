@@ -50,7 +50,7 @@ test_1.on('connection', socket => {
     msg
       .create({
         user_Id: data.user._Id,
-        festival_Id: data.festival_Id,
+        //festival_Id: data.festival_Id,
         msg: data.text
       })
     test_1.emit('chat', {

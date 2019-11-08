@@ -54,7 +54,7 @@ test_1.on('connection', socket => {
   socket.on('chat', data => {
     msg
       .create({
-        user_Id: data.user._Id,
+        user_Id: data.user._id,
         //festival_Id: data.festival_Id,
         msg: data.text
       })
@@ -354,8 +354,11 @@ app.delete('/festivals', (req, res) => {
 })
 
 
-app.set('port', port);
-app.listen(app.get('port'));
+// app.set('port', port);
+// app.listen(app.get('port'));
+server.listen(port, function(){
+  console.log('listening on port 5000');
+})
 
 module.exports = app;
 

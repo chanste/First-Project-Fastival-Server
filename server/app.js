@@ -76,13 +76,14 @@ test_1.on('connection', socket => {
       socket.emit('chat', result);
     });// 클라이언트에서는 쓰면 emit 이 필요한 것
   socket.on('chat', data => {
-    msg
+      msg
       .create({
         user_Id: data.user._id,
         festival_Id: 1,
         msg: data.text
       })
-      msg
+      .then(() => {
+        msg
       .findAll({
         attributes:[
           'id',
@@ -104,6 +105,7 @@ test_1.on('connection', socket => {
         console.log(result);
         socket.emit('chat', result);
       });// 클라이언트에서는 쓰면 emit 이 필요한 것
+    })
   })
 });
 

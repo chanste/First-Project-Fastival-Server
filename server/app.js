@@ -57,7 +57,7 @@ test_1.on('connection', socket => {
     .findAll({
       attributes:[
         ['msg', 'text'],
-        createdAt
+        //createdAt
       ],
       where: {festival_Id: 1},
       include: [{
@@ -292,18 +292,18 @@ app.get('/concerts/:fest_id', (req, res) => {
   concert
     .findAll({
       // 진짜 소스
-      include: [{
-        model: festival,
-        where: { festival_Id: req.params.fest_id}
-      }]
-      // attributes: [
-      //   ['stage', 'stg']
-      // ],
-      // where : {concert_Id : 133},
-      // include: {
+      // include: [{
       //   model: festival,
       //   where: { festival_Id: req.params.fest_id}
-      // }
+      // }]
+      attributes: [
+        ['stage', 'stg']
+      ],
+      where : {concert_Id : 133},
+      include: {
+        model: festival,
+        where: { festival_Id: req.params.fest_id}
+      }
     })
 
     .then(result => {

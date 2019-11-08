@@ -7,19 +7,25 @@ module.exports = (sequelize, DataTypes) => {
      primaryKey: true,
      autoIncrement: true
    },
-   starttime: DataTypes.DATE,
-   endtime: DataTypes.DATE,
    stage: DataTypes.STRING,
    artist: DataTypes.STRING,
-   con_day: DataTypes.STRING,
-   fest_id: DataTypes.INTEGER
+   starttime: DataTypes.STRING,
+   endtime: DataTypes.STRING,
+   con_day: DataTypes.INTEGER,
+   //festival_Id: DataTypes.INTEGER // 외래 키 처리
 }, {
   hooks: {
 
     }
   });
   Concert.associate = function(models) {
-
+    Concert.belongsToMany(models.Users, {
+      through: 'UserConcert',
+      foreignKey: 'concert_Id'
+    })
+    Concert.belongsTo(models.Festival, {
+      foreignKey: 'festival_Id'
+    })
   };
   return Concert;
 }

@@ -82,7 +82,28 @@ test_1.on('connection', socket => {
         festival_Id: 1,
         msg: data.text
       })
-    test_1.emit('chat', data)
+      msg
+      .findAll({
+        attributes:[
+          'id',
+          ['msg', 'text'],
+          'createdAt'
+          //createdAt
+        ],
+        where: {festival_Id: 1},
+        include: [{
+          attributes: [
+           ['user_Id', '_id'],
+           ['username', 'name'],
+           ['photourl', 'avatar']
+           ],
+          model: users,
+        }]
+      })
+      .then(result => {
+        console.log(result);
+        socket.emit('chat', result);
+      });// 클라이언트에서는 쓰면 emit 이 필요한 것
   })
 });
 

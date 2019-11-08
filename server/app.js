@@ -56,7 +56,6 @@ test_1.on('connection', socket => {
   msg
     .findAll({
       attributes:[
-        ['id', '_id'],
         ['msg', 'text'],
         createdAt
       ],
@@ -292,14 +291,21 @@ app.get('/festivals/:id', (req, res) => {
 app.get('/concerts/:fest_id', (req, res) => {
   concert
     .findAll({
-      //where: {artist: '만남의 장소'},
+      // 진짜 소스
       include: [{
-        //attributes: ['name', 'img_url'],
         model: festival,
         where: { festival_Id: req.params.fest_id}
       }]
-      //where: { festival_Id: req.params.fest_id}
+      // attributes: [
+      //   ['stage', 'stg']
+      // ],
+      // where : {concert_Id : 133},
+      // include: {
+      //   model: festival,
+      //   where: { festival_Id: req.params.fest_id}
+      // }
     })
+
     .then(result => {
       if (result) {
         res.status(200).json(result)

@@ -41,12 +41,35 @@ let chkBoolean = false;
 //       //   message: result
 //       // })
 //     });
+//users
+  //   .findAll({
+  //     include: [{
+  //       attributes: ['_id', 'name', 'avatar'],
+  //       model: msg,
+  //       where: {fest_id: 1}
+  //     }]
+  //   })
 
 var test_1 = io.of('/msg/1');
 
 test_1.on('connection', socket => {
   msg
-    .findAll()
+    .findAll({
+      attributes:[
+        ['id', '_id'],
+        ['msg', 'text'],
+        createdAt
+      ],
+      where: {festival_Id: 1},
+      include: [{
+        attributes: [
+         ['user_Id', '_id'],
+         ['username', 'name'],
+         ['photourl', 'avatar']
+         ],
+        model: users,
+      }]
+    })
     .then(result => {
       console.log(result);
       socket.emit('chat', result);
@@ -254,7 +277,7 @@ app.get('/festivals/:id', (req, res) => {
       include: [{
         attributes: ['festival_Id','name', 'map_url', 'img_url'],
         model: festival,
-        through: { attributes: [] }
+        //through: { attributes: [] }
       }]
     })
     .then(result => {
@@ -269,7 +292,13 @@ app.get('/festivals/:id', (req, res) => {
 app.get('/concerts/:fest_id', (req, res) => {
   concert
     .findAll({
-      where: { festival_Id: req.params.fest_id}
+      //where: {artist: '만남의 장소'},
+      include: [{
+        //attributes: ['name', 'img_url'],
+        model: festival,
+        where: { festival_Id: req.params.fest_id}
+      }]
+      //where: { festival_Id: req.params.fest_id}
     })
     .then(result => {
       if (result) {

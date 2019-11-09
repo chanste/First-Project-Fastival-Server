@@ -1,0 +1,18 @@
+# Festival-app-server API docs
+
+
+
+
+| Method | URL                            | Body                                                                                                      | Response                                                                                                                            |
+| ------ | -----------------------------  | -----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------- | 
+| POST   | /users                         | body: `{user_Id: str, email : str, username: str, photourl: str, givenname : str}`                        | null                                                                                                                                | 
+| GET    | /festivals                     | null                                                                                                      | `[{festival_Id: int, name: str, img_url: str},{data2}, {data3}, ....]`                                                              |
+| POST   | /festivals                     | `body:{ user_Id : str, festival_Id : int}`                                                                | null                                                                                                                                |
+| GET    | /festivals/user-Id             | null                                                                                                      | `[{festival_Id : int, name : str, map_url : str, img_url : str}]`                                                                   | 
+| GET    | /concerts/fest-Id              | null                                                                                                      | `[{concert_Id : int, starttime : str, endtime,  stage : str, artist : str, con_day : int, festival_Id : int}, {data2}, {data3}....]`|
+| GET    | /concerts_user/user_Id/fest_Id | null                                                                                                      | `[{concert_Id : int, starttime : str, endtime : str, stage : str, artist : str, con_day : int, festival_Id : int}]`                 |  
+| POST   | /concerts                      | `body: {user_Id : str, concert_Id : int}`                                                                 | null                                                                                                                                | 
+| DELETE | /concerts                      | `body: {user_Id : str, concert_Id : int}`                                                                 | null                                                                                                                                |
+| DELETE | /festivals                     | `body: {user_Id : str, festival_Id : int}`                                                                | null                                                                                                                                |
+| GET    | /msg/fest-Id                   | null                                                                                                      | `[{_id : int, text : str, createdAt : timestamp, Users : { _id : int, name : str, avatar : str }}, {data2}, {data3} ...]`           |
+| POST   | /msg                           | `body : { _id : int, text : str, createdAt : timestamp, user : { _id : str, name : str, avatar : str, }}` | null                                                                                                                                |   
